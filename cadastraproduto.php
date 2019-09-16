@@ -223,18 +223,10 @@
               $select = mysqli_query($bd,"select categoria.idcat, categoria.nome, produto.categoriaid from categoria, produto where categoria.idcat=produto.categoriaid order by categoria.nome") or die("Erro");
 
               while ($row = mysqli_fetch_array($select)) {
+                echo "<option value='nome'>" .$row['nome']."</option>";
 
-              $retorno = $row['nome'];
-              
               }
-            ?>
-            <option value="nome">
-
-              <?php
-                echo $retorno;
-              ?>
-               
-            </option>
+	  ?>
       	 </select>
     	</div>
     <br>
