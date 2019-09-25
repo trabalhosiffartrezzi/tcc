@@ -75,6 +75,8 @@
         ##tenta recuperar a ultima chave da tabela endereco
         $chave_estrangeira =  " select LAST_INSERT_ID() into @endereco;";
 
+        mysqli_query($bd,$chave_estrangeira);
+
         ##tente inserir a chave recuperada na tabela usuario
         $sql2 = "insert into usuario(iduser, nome, funcao, telefone, senha, cpf_cnpj, email, enderecoid) values ('$iduser', '$nome', '$funcao','$telefone', '$senha', '$cpf_cnpj', '$email', '$chave_estrangeira';";
 
