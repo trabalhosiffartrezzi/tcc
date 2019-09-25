@@ -46,7 +46,7 @@
 	    $unidade  = mysqli_real_escape_string($bd, $_POST["unidade"] ) ;
 	    $categoriaid  = mysqli_real_escape_string($bd, $_POST["categoriaid"] ) ;
      }
-     
+
      if (strtoupper($acao) == "INCLUIR") {
 		 
 		 $sql = "insert into produto (idprod,nomeprod,descricao,valor,unidade,categoriaid) values ('$idprod','$nomeprod','$descricao','$valor','$unidade','$categoriaid')";
@@ -66,20 +66,24 @@
 		 }
 	 }
 	 
+   ## Bug na função Salvar ##
+
 	 if (strtoupper($acao) == "SALVAR") {
 		 
 		 $descr_acao = "Salvar";
 		 
 		 $sql = " update 
-		              produto 
+		              produto, categoria 
 		          set 
-		              nomeprod = '$nomeprod'
-		              descricao = '$descricao'
-		              valor = '$valor'
-		              unidade = '$unidade'
-		              categoriaid = '$categoriaid' 
+		              produto.nomeprod = '$nomeprod',
+		              produto.descricao = '$descricao',
+		              produto.valor = '$valor',
+		              produto.unidade = '$unidade',
+		              produto.categoriaid = '$categoriaid' 
 		          where 
+                  produto.categoriaid = categoria.idcat and
 		              idprod = '$idprod' ";
+
 		              
 		 if ( ! mysqli_query($bd, $sql) ) {
 			 
@@ -219,15 +223,20 @@
     <div class="col-sm-10">
         <label form="inputNome">Categoria</label>      
           <select class="form-control"  name="categoriaid">
-            <?php
-              $select = mysqli_query($bd,"select categoria.idcat, categoria.nome, produto.categoriaid from categoria, produto where categoria.idcat=produto.categoriaid order by categoria.nome") or die("Erro");
+                 
+          <?php 
 
-              while ($row = mysqli_fetch_array($select)) {
-                echo "<option value='nome'>" .$row['nome']."</option>";
+       $result = "select idcat, nome from categoria";
+       $resultado = mysqli_query($bd, $result);
 
-              }
-	  ?>
-      	 </select>
+       while($row = mysqli_fetch_assoc($resultado)) {
+          if($row['idcat'] == $categoriaid) echo '<option selected value="'.$row['idcat'].'"> '.$row['nome'].' </option>';
+          else echo '<option value="'.$row['idcat'].'"> '.$row['nome'].' </option>';
+         
+       }
+          ?>
+                 
+            </select>
     	</div>
     <br>
     <br>

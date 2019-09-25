@@ -6,12 +6,12 @@
 	<title>Painel Administrativo</title>
 	<?php
 	 
-	if ( isset( $_SESSION["cpf_cnpj"] ) ){
-     	
-     	header("location: index.php");
-    }else{
-
-    }
+  session_start();
+  
+  if ( ! isset( $_SESSION["cpf_cnpj"] ) )
+     header("location: index.php?mensagem=Você não tem autorização para acessar essa parte do site");
+  
+  $cpf_cnpj = $_SESSION["cpf_cnpj"];
 ?>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -30,10 +30,10 @@
     <a class="nav-link" href="cadastraproduto.php">Gerenciar Produtos</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Gerenciar Usuários</a>
+    <a class="nav-link" href="cadastracidades.php">Gerenciar Cidades</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Gerenciar Pedidos</a>
+    <a class="nav-link" href="cadastrausuario.php">Gerenciar Usuarios</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Gerenciar Pagamentos</a>

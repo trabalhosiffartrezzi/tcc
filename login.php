@@ -16,8 +16,8 @@
    else
       $cpf_cnpj = "";
    
-   if ( isset($_POST["senha"]) )
-      $senha = $_POST["senha"];
+   if ( isset ($_POST["senha"]) )
+      $senha = md5($_POST["senha"]);
    else
       $senha = "";
    
