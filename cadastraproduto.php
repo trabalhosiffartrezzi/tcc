@@ -49,7 +49,7 @@
 
      if (strtoupper($acao) == "INCLUIR") {
 		 
-		 $sql = "insert into produto (idprod,nomeprod,descricao,valor,unidade,categoriaid) values ('$idprod','$nomeprod','$descricao','$valor','$unidade','$categoriaid')";
+		 $sql = "insert into produto (idprod,nomeprod,descricao,valor,unidade,categoriaid) values ($idprod,'$nomeprod','$descricao',$valor,'$unidade','$categoriaid')";
 		                
 		 if ( ! mysqli_query($bd, $sql) ) {
 
@@ -77,12 +77,12 @@
 		          set 
 		              produto.nomeprod = '$nomeprod',
 		              produto.descricao = '$descricao',
-		              produto.valor = '$valor',
+		              produto.valor = $valor,
 		              produto.unidade = '$unidade',
 		              produto.categoriaid = '$categoriaid' 
 		          where 
                   produto.categoriaid = categoria.idcat and
-		              idprod = '$idprod' ";
+		              idprod = $idprod ";
 
 		              
 		 if ( ! mysqli_query($bd, $sql) ) {
@@ -105,7 +105,7 @@
 
      		if (mysqli_errno($bd) == 1451) {
 
-     			$mensagem = "Não é possível excluir uma área enquanto houverem prioridades alocadas a ela!";
+     			$mensagem = "Não é possível excluir um produto enquanto houverem categorias alocadas a ele!";
      		}
 		}
 
@@ -120,7 +120,7 @@
 
      	$sql = "select idprod, nomeprod, descricao, valor, unidade, categoriaid 
      	        from produto
-     	        where idprod = '$idprod' ";
+     	        where idprod = $idprod ";
 
      	$resultado = mysqli_query($bd, $sql);
 
@@ -260,3 +260,8 @@
 
 </body>
 </html>
+<?php
+  
+  mysqli_close($bd);
+
+?>

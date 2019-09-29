@@ -65,26 +65,27 @@
 
      if (strtoupper($acao) == "INCLUIR") {
       
-      ## Checa se o campo e nulo
+      ##Checa se o campo e nulo
       if ($idenderec == false){
 
-        $sql = "insert into endereco (idenderec,rua,bairro,numero,complemento,cidadeid) values ('$idenderec','$rua','$bairro','$numero','$complemento','$cidadeid');";
+        $sql = "insert into endereco (rua,bairro,numero,complemento,cidadeid) values ('$rua','$bairro',$numero,'$complemento',$cidadeid);";
         ##insere os dados na tabela endereco
-        mysqli_query($bd, $sql);
+       $result1 = mysqli_query($bd, $sql);
 
-        ##tenta recuperar a ultima chave da tabela endereco
-        $chave_estrangeira =  " select LAST_INSERT_ID() into @endereco;";
+        ##recupera a ultima chave da tabela endereco
+        $chave_estrangeira =  " select idenderec from endereco order by idenderec desc limit 1";
+        
+        $chave = mysqli_query($bd,$chave_estrangeira);
+        $chave = mysqli_fetch_array($chave);
+      
+         ##insere a chave recuperada na tabela usuario
+        $sql2 = "insert into usuario(nome, funcao, telefone, senha, cpf_cnpj, email, enderecoid) values ( '$nome', '$funcao','$telefone', md5('$senha'), '$cpf_cnpj', '$email', ".$chave['idenderec'].");";
 
-        mysqli_query($bd,$chave_estrangeira);
-
-        ##tente inserir a chave recuperada na tabela usuario
-        $sql2 = "insert into usuario(iduser, nome, funcao, telefone, senha, cpf_cnpj, email, enderecoid) values ('$iduser', '$nome', '$funcao','$telefone', '$senha', '$cpf_cnpj', '$email', '$chave_estrangeira';";
-
-        mysqli_query($bd, $sql2 );
+        $result2 = mysqli_query($bd, $sql2 );
       
       }
 		                
-		 if ( ! mysqli_query($bd, $sql) && ! mysqli_query($bd, $sql2)  ) {
+		 if ( !$result1 && !$result2  ) {
 
 			    $mensagem = "<h3>Ocorreu um erro ao inserir os dados </h3>
 			              <h3>Erro: ".mysqli_error($bd)."</h3>
@@ -104,31 +105,30 @@
 		 $descr_acao = "Salvar";
 		 
 		 $sql = " update 
-		              endereco, cidade 
+		              endereco
 		          set 
 		              endereco.rua = '$rua',
                   endereco.bairro = '$bairro',
-                  endereco.numero = '$numero',
+                  endereco.numero = $numero,
                   endereco.complemento = '$complemento',
-                  endereco.cidadeid = = '$cidadeid' 
+                  endereco.cidadeid = $cidadeid 
 		          where 
-                  endereco.cidadeid = cidade.idcidade and
-		              idenderec = '$idenderec' ";
+		              idenderec = $idenderec ";
 
       $sql2 = " update
-                  usuario, endereco
+                  usuario
                 set
-                  user.nome = '$nome',
-                  user.funcao = '$funcao',
-                  user.telefone = '$telefone',
-                  user.senha = '$senha',
-                  user.cpf_cnpj = '$cpf_cnpj',
-                  user.email = '$email',
-                  user.enderecoid = = '$enderecoid'
+                  nome = '$nome',
+                  funcao = '$funcao',
+                  telefone = '$telefone',
+                  senha = '$senha',
+                  cpf_cnpj = '$cpf_cnpj',
+                  email = '$email',
+                  enderecoid = $idenderec
                 where
-                  user.enderecoid = endereco.idenderec and
-                  iduser = '$iduser' ";
-		              
+                  iduser = $iduser ";
+
+                  
 		 if ( ! mysqli_query($bd, $sql2) &&  ! mysqli_query($bd, $sql) ) {
 			 
 			 $mensagem = "<h3>Ocorreu um erro ao alterar os dados </h3>
@@ -139,19 +139,27 @@
 
      if (strtoupper($acao) == "EXCLUIR") {
         
-        #$idenderec = $_POST["idenderec"];
-        $iduser = $_POST["iduser"];
+      $iduser = $_POST["iduser"];
 
      	$descr_acao = "Incluir";
 
-     	$sql2 = "delete from endereco where idenderec = $idenderec ";
-      $sql = "delete from user where iduser = $iduser ";
+      $delete = " select * from usuario where iduser = $iduser";
 
-     	if ( ! mysqli_query($bd, $sql, $sql2) ) {
+      $resultado = mysqli_query($bd, $delete);
+
+      $resultado = mysqli_fetch_array($resultado);
+
+     	$sql2 = "delete from endereco where idenderec = ".$resultado['enderecoid'];
+      $sql = "delete from usuario where iduser = $iduser ";
+      
+      $result3 = mysqli_query($bd, $sql);
+      $result4 = mysqli_query($bd, $sql2);
+      
+     	if ( !$result3  && !$result4  ) {
 
      		if (mysqli_errno($bd) == 1451) {
 
-     			$mensagem = "Não é possível excluir uma área enquanto houverem prioridades alocadas a ela!";
+     			$mensagem = "Não é possível excluir uma usuario enquanto houverem endereços cadastrados a ele!";
      		}
 		}
 
@@ -161,23 +169,26 @@
 
      if (strtoupper($acao) == "BUSCAR") {
 
-        #$idenderec = $_POST["idenderec"];
-        $iduser = $_POST["iduser"];
+      $iduser = $_POST["iduser"];
+      
 
      	$descr_acao = "Salvar";
-
-     	$sql2 = "select idenderec, rua, bairro, numero, complemento, cidadeid 
-     	        from endereco
-     	        where idenderec = '$idenderec' ";
 
       $sql = "select iduser, nome, funcao, telefone, senha, cpf_cnpj, email, enderecoid 
               from usuario
               where iduser = '$iduser' ";
+             
+      $resultado2 = mysqli_query($bd, $sql);
+      $user = mysqli_fetch_array($resultado2);
+
+     	$sql2 = "select idenderec, rua, bairro, numero, complemento, cidadeid 
+     	        from endereco
+     	        where idenderec = ".$user['enderecoid'];  
+              
 
      	$resultado = mysqli_query($bd, $sql2);
-      $resultado2 = mysqli_query($bd, $sql2);
 
-     	if (mysqli_num_rows($resultado && $resultado2) == 1) {
+     	if (mysqli_num_rows($resultado) == 1 && mysqli_num_rows($resultado2) == 1) {
 
              $dados = mysqli_fetch_assoc($resultado);
 
@@ -187,13 +198,14 @@
              $numero = $dados["numero"];
              $complemento = $dados["complemento"];
              $cidadeid = $dados["cidadeid"];
-             $iduser = $dados["iduser"];
-             $nome = $dados["nome"];
-             $funcao = $dados["funcao"];
-             $senha = $dados["senha"];
-             $cpf_cnpj = $dados["cpf_cnpj"];
-             $email = $dados["email"];
-             $enderecoid = $dados["enderecoid"];
+             $iduser = $user["iduser"];
+             $nome = $user["nome"];
+             $telefone = $user["telefone"];
+             $funcao = $user["funcao"];
+             $senha = $user["senha"];
+             $cpf_cnpj = $user["cpf_cnpj"];
+             $email = $user["email"];
+             $enderecoid = $user["enderecoid"];
 
      	}
      }
@@ -368,3 +380,8 @@
 
 </body>
 </html>
+<?php
+  
+  mysqli_close($bd);
+
+?>
