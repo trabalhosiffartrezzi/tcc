@@ -52,8 +52,30 @@
 			$sqlinsert = "insert into venda_produto (qtde_unidade, prodid, vendapid) values ($qtde_unidade, $prodid,'$vendapid');";
 
       $insert = mysqli_query($bd, $sqlinsert);
-		                
-		 	if ( ! $insert ) {
+
+      if ($insert == true) {
+            
+            $sql_qtde = "select qtde_unidade from venda_produto order by idvp desc limit 1";
+            $sql_valorun = "select produto.valor from produto, venda_produto where produto.idprod = venda_produto.prodid order by venda_produto.idvp desc limit 1";
+       
+            $valor1 = mysqli_query($bd,$sql_qtde);
+            $valor2 = mysqli_query($bd,$sql_valorun);
+      
+            $retorno1 = mysqli_fetch_array($valor1);
+            $retorno2 = mysqli_fetch_array($valor2);
+      
+            $qtde_unidade = $retorno1["qtde_unidade"];
+            $valor = $retorno2["valor"];
+
+            $total_un = $qtde_unidade * $valor;
+
+            $sql_total_un = "update venda_produto set total_un = $total_un order by idvp desc limit 1";
+            
+            $gravar = mysqli_query($bd,$sql_total_un);
+    
+            }
+                    
+	if ( ! $insert ) {
 
 			    $mensagem = "<h3>Ocorreu um erro ao inserir os dados </h3>
 			              <h3>Erro: ".mysqli_error($bd)."</h3>
@@ -103,7 +125,7 @@
 }
 
 
-$sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_produto.idvp, venda_produto.qtde_unidade 
+$sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_produto.idvp, venda_produto.qtde_unidade, venda_produto.total_un 
   from 
     produto, venda_produto
   where
@@ -127,17 +149,7 @@ $sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_pr
        $vnomeprod = $dados["nomeprod"];
        $vvalor = $dados["valor"];
        $vqtde_unidade = $dados["qtde_unidade"];
-
-       $sql_total = "select qtde_unidade from venda_produto order by idvp desc limit 1";
-       
-       $valor = mysqli_query($bd,$sql_total);
-       $retorno = mysqli_fetch_array($valor);
-
-       $total_qtde = $retorno["qtde_unidade"];
-
-       $total = $total_qtde * $vvalor;
-
-       $totalpe = array($total);
+       $vtotal_un = $dados["total_un"];
 
        $excluir = "<form method='post'>
                       <input type='hidden' name='idvp' value='$vidvp'>
@@ -146,14 +158,20 @@ $sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_pr
                       
                    </form>";
 
-       $tabela = $tabela."<tr><td>$vidpro</td><td>$vqtde_unidade</td><td>$vnomeprod</td><td>$vvalor</td><td>$total</td>
+       $tabela = $tabela."<tr><td>$vidpro</td><td>$vqtde_unidade</td><td>$vnomeprod</td><td>$vvalor</td><td>$vtotal_un</td>
        <td>$excluir</td></tr>";
 
     }   
 
-    ## Implementar For para somar os valores do Array e imprimir na tabela.
+    $sqltotalpe = "select sum(total_un) from venda_produto;";
 
-    $tabela = $tabela."<tr><td>Total do Pedido</td><td colspan='4'></td></tr>";
+    $total = mysqli_query($bd, $sqltotalpe);
+
+    $totalpe = mysqli_fetch_array($total);
+
+    $armazenatotal = $totalpe[0];
+    
+    $tabela = $tabela."<tr><td>Total do Pedido</td><td colspan='5' >$armazenatotal</td></tr>";
 
     $tabela = $tabela."</table>"; 
    } else 
@@ -206,5 +224,10 @@ $sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_pr
      <?php echo $tabela; ?>
   
 </fieldset>
+<br>
+<br>
+<div class="alert alert-danger" role="alert">
+  <a href="#">Clique aqui para concluir o pedido</a>
+</div>
 </body>
 </html>
