@@ -42,9 +42,9 @@
 
      if (strtoupper($acao) == "INCLUIR") {
 		 
-		 $sql = "insert into venda_pedido (userclienteid , uservendedorid ,enderecoid) values ($userclienteid,$uservendedorid, $enderecoid)";
+		 $sqlinsert = "insert into venda_pedido (userclienteid , uservendedorid ,enderecoid) values ($userclienteid,$uservendedorid, $enderecoid)";
 		                
-		 if ( ! mysqli_query($bd, $sql) ) {
+		 if ( ! mysqli_query($bd, $sqlinsert) ) {
 
 			    $mensagem = "<h3>Ocorreu um erro ao inserir os dados </h3>
 			              <h3>Erro: ".mysqli_error($bd)."</h3>
@@ -123,48 +123,7 @@
              $enderecoid = $dados["enderecoid"];
      	}
      }
-   }
-	 
-   $sql_listar = "select idvendap, userclienteid, enderecoid, uservendedorid from venda_pedido where idvendap = idvendap";
-	 
-   $lista = mysqli_query($bd, $sql_listar);
-	
-	
-   if ( mysqli_num_rows($lista) > 0 ) {
-		
-		$tabela = "<table border='1'>";
-		
-		$tabela = $tabela."<tr><th>Código</th><th>Cliente</th><th>Endereço Entrega</th><th>Vendedor</th>
-		             <th>Alterar</th><th>Excluir</th></tr>";
-		 
-		while ( $dados = mysqli_fetch_assoc($lista) ) {
-		   
-		   $vidvendap     = $dados["idvendap"];
-		   $vuserclienteid  = $dados["userclienteid"];
-		   $vuservendedorid  = $dados["uservendedorid"];
-		   $venderecoid = $dados["enderecoid"];
-	   
-		   $alterar = "<form method='post'>
-		                  <input type='hidden' name='idvendap' value='$vidvendap'>
-		                  <input type='hidden' name='acao' value='BUSCAR'>
-		                  <input type='image' src='./img/editar.png'> 
-		               </form>";
-		   
-		   $excluir = "<form method='post'>
-		                  <input type='hidden' name='idvendap' value='$vidvendap'>
-		                  <input type='hidden' name='acao' value='EXCLUIR'>
-		                  <input type='image' src='./img/deletar.png'>
-		                  
-		               </form>";
-		   
-		   $tabela = $tabela."<tr><td>$vidvendap</td><td>$vuserclienteid</td><td>$venderecoid</td><td>$vuservendedorid</td>
-		        <td>$alterar</td><td>$excluir</td></tr>";
-		}
-		
-		$tabela = $tabela."</table>"; 
-   } else 
-	    $tabela = "não há dados para listar";
-	    
+   } 
 ?>
 
 <div class="container col-md-6">
@@ -250,13 +209,16 @@
   	</div>
   </div>  
 </form>
+  
+  <?php
 
-<fieldset>
-<legend>Pedidos Cadastrados</legend>
-	
-	   <?php echo $tabela; ?>
-	
-</fieldset>
+  if (isset($sqlinsert) == true) {
+    echo '<div class="alert alert-success" role="alert">
+            Pedido cadastrado com sucesso!
+          <a class="nav-link active" href="inserirprodutos.php">Clique aqui para adicionar produtos ao pedido</a>
+          </div>';
+           }
+  ?>
 
 </div>
 

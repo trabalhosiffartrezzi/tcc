@@ -8,13 +8,14 @@
 
 session_start();
 
-if ( isset($cpf_cnpj) && isset($senha) ){
-  header("location:index.php");      
-}else{
-    
-}
+if (isset($_SESSION["cpf_cnpj"]) && isset($_SESSION["iduser"] )) {
+    $cpf_cnpjv = $_SESSION["cpf_cnpj"];
+    $iduserv = $_SESSION["iduser"];
+  } else{
+    header('location:index.php?Erro ao acessar os dados');
+  }
  
-?>
+  ?>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 

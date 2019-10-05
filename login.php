@@ -29,8 +29,8 @@
 
       $dados = mysqli_fetch_assoc($resultado);
       
-      $cpf_cnpj = $_SESSION["cpf_cnpj"]; 
-      $senha =  $_SESSION["senha"];
+      $_SESSION["cpf_cnpj"] = $cpf_cnpj; 
+      $_SESSION["iduser"] = $dados["iduser"];
       header('location: painel.php');
    
    }else{
