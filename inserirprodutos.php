@@ -10,7 +10,6 @@
 <body>
 
 	<?php
-    	
     	$bd = mysqli_connect("localhost","root","","tcc");
 
   			if($bd){ 
@@ -42,14 +41,13 @@
 
      	if($vendapid == false ){
 
-     	$sql_consulta = 'select idvendap from venda_pedido order by idvendap desc limit 1';
+     	$sql_consulta = "select idvendap, uservendedorid from venda_pedido where uservendedorid = '$iduserv';";
 
 			$chave = mysqli_query($bd,$sql_consulta);
+
 			$retorno = mysqli_fetch_array($chave);
 
-      $vendapid = $retorno["idvendap"];
-
-			$sqlinsert = "insert into venda_produto (qtde_unidade, prodid, vendapid) values ($qtde_unidade, $prodid,'$vendapid');";
+			$sqlinsert = "insert into venda_produto (qtde_unidade, prodid, vendapid) values ($qtde_unidade, $prodid,".$retorno["idvendap"].");";
 
       $insert = mysqli_query($bd, $sqlinsert);
 
@@ -125,13 +123,12 @@
 }
 
 
-$sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_produto.idvp, venda_produto.qtde_unidade, venda_produto.total_un 
+$sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_produto.idvp, venda_produto.qtde_unidade, venda_produto.total_un, venda_pedido.uservendedorid
   from 
-    produto, venda_produto
+    produto, venda_produto , venda_pedido
   where
-    produto.idprod = venda_produto.prodid
-  order by 
-    venda_produto.prodid";
+    venda_pedido.uservendedorid = 3  limit 1;
+     ";
    
    $lista = mysqli_query($bd, $sql_listar);
    
@@ -178,7 +175,40 @@ $sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_pr
       $tabela = "não há dados para listar";
       
  ?>
+
+
  <div class="container col-md-6">
+
+  <?php
+
+    $sql_pedido = "select venda_pedido.uservendedorid, venda_pedido.idvendap, venda_pedido.userclienteid, usuario.iduser, usuario.nome, usuario.cpf_cnpj
+        from 
+            venda_pedido, usuario
+        where 
+            venda_pedido.uservendedorid = $iduserv and usuario.cpf_cnpj = $cpf_cnpjv LIMIT 1;";
+
+    $lista1 = mysqli_query($bd, $sql_pedido);
+        
+    if ( mysqli_num_rows($lista1) > 0 ) {
+    
+    $tabela1 = "<table>";
+    
+    $tabela1= $tabela1."<tr><th>Codigo da Venda</th><th>Vendedor</th></tr>";
+     
+    while ( $dados = mysqli_fetch_assoc($lista1) ) {
+       
+       $pidvendap = $dados["idvendap"];
+       $pnome = $dados["nome"];
+       
+       $tabela1 = $tabela1."<tr><td>$pidvendap</td><td>$pnome</td></tr>";
+    } 
+      $tabela1 = $tabela1."</table>"; 
+    } else 
+      $tabela1 = "não há dados para listar";            
+  ?>
+    <div class="alert alert-warning" role="alert">
+      <?php echo $tabela1; ?>
+    </div>
  <form action="inserirprodutos.php" method="post">
   <div class="form-group ">
     <h2>Insira os produtos abaixo</h2>
@@ -201,8 +231,7 @@ $sql_listar = " select produto.idprod, produto.nomeprod, produto.valor, venda_pr
 
        while($row = mysqli_fetch_assoc($resultado)) {
           if($row['idprod'] == $prodid) echo '<option selected value="'.$row['idprod'].'"> '.$row['nomeprod'].'--- Valor(R$):'.$row['valor'].' </option>';
-          else echo '<option value="'.$row['idprod'].'"> '.$row['nomeprod'].'--- Valor(R$):'.$row['valor'].' </option>';
-         
+          else echo '<option value="'.$row['idprod'].'"> '.$row['nomeprod'].'--- Valor(R$):'.$row['valor'].' </option>'; 
        }
           ?>
             </select>

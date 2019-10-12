@@ -7,6 +7,16 @@
 		include_once("painel.php")
  
 	?>
+
+  <script type="text/javascript" src="mascara/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="mascara/jquery.mask.min.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#cpf_cnpj").mask('00.000.000/0000-00');
+  })
+  </script>
+
 </head>
 <body>
 
@@ -105,15 +115,16 @@
 		 $descr_acao = "Salvar";
 		 
 		 $sql = " update 
-		              endereco
+		              endereco, cidade
 		          set 
 		              endereco.rua = '$rua',
                   endereco.bairro = '$bairro',
                   endereco.numero = $numero,
                   endereco.complemento = '$complemento',
-                  endereco.cidadeid = $cidadeid 
+                  endereco.cidadeid = $cidadeid
 		          where 
-		              idenderec = $idenderec ";
+                  cidade.idcidade = endereco.cidadeid and
+		              endereco.idenderec = $idenderec ";
 
       $sql2 = " update
                   usuario
@@ -269,7 +280,6 @@
 	    
 
     ?>
-    
  <div class="container col-md-6">
  <form action="cadastrausuario.php" method="post">
   <div class="form-group ">
@@ -303,7 +313,7 @@
     <br>
     <div class="col-sm-10">
       <label form="inputNome">CPF ou CNPJ</label> 
-      <input type="text" class="form-control" name="cpf_cnpj" value="<?php echo $cpf_cnpj;?>" placeholder="CPF ou CNPJ">
+      <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" value="<?php echo $cpf_cnpj;?>" placeholder="CPF ou CNPJ">
     </div>
     <br>
     <br>
