@@ -95,20 +95,11 @@
 
       $descr_acao = "Incluir";
 
-      $delete = " select * from venda_produto where idvp = $idvp";
+      $delete = " delete from venda_produto WHERE venda_produto.idvp = $idvp";
 
-      $resultado = mysqli_query($bd, $delete);
+      $sql = mysqli_query($bd,$delete);
 
-      $resultado = mysqli_fetch_array($resultado);
-
-      $sql = "delete from venda_produto where prodid =".$resultado["prodid"];
-      $sql3 = "delete from venda_pedido where idvp = $idvp";
-
-
-      $result = mysqli_query($bd, $sql);
-      $result3 = mysqli_query($bd, $sql3);      
-      
-      if ( !$result &&  !$result3 ) {
+      if ( !$sql ) {
 
         if (mysqli_errno($bd) == 1451) {
 
@@ -127,8 +118,11 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
   from 
     produto, venda_produto , venda_pedido
   where
-    venda_pedido.uservendedorid = 3  limit 1;
-     ";
+    venda_pedido.uservendedorid = $iduserv and 
+    produto.idprod = venda_produto.prodid and
+    venda_pedido.idvendap = venda_produto.vendapid 
+   order by
+    venda_produto.idvp;";
    
    $lista = mysqli_query($bd, $sql_listar);
    
@@ -147,6 +141,7 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
        $vvalor = $dados["valor"];
        $vqtde_unidade = $dados["qtde_unidade"];
        $vtotal_un = $dados["total_un"];
+       $vuservendedorid = $dados["uservendedorid"];
 
        $excluir = "<form method='post'>
                       <input type='hidden' name='idvp' value='$vidvp'>
@@ -185,7 +180,7 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
         from 
             venda_pedido, usuario
         where 
-            venda_pedido.uservendedorid = $iduserv and usuario.cpf_cnpj = $cpf_cnpjv LIMIT 1;";
+            venda_pedido.uservendedorid = $iduserv and usuario.cpf_cnpj = '$cpf_cnpjv' LIMIT 1;";
 
     $lista1 = mysqli_query($bd, $sql_pedido);
         
@@ -256,7 +251,7 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
 <br>
 <br>
 <div class="alert alert-danger" role="alert">
-  <a href="#">Clique aqui para concluir o pedido</a>
+  <a href="observacoes.php">Clique aqui para concluir o pedido</a>
 </div>
 </body>
 </html>

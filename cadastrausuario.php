@@ -12,9 +12,19 @@
   <script type="text/javascript" src="mascara/jquery.mask.min.js"></script>
 
   <script type="text/javascript">
+ 
   $(document).ready(function(){
-    $("#cpf_cnpj").mask('00.000.000/0000-00');
-  })
+    
+  var options =  {
+  onKeyPress: function(cpf_cnpj, options) {
+    var masks = ['000.000.000-00', '00.000.000/0000-00'];
+    var mask = (cpf_cnpj.length > 14) ? masks[1] : masks[0];
+    $("#cpf_cnpj").mask(mask, options);
+    }};
+
+  $("#cpf_cnpj").mask('000.0000.000-00', options);
+
+ });
   </script>
 
 </head>

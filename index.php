@@ -12,6 +12,26 @@
 
   <script src="https://kit.fontawesome.com/5227edd223.js"></script>
 
+  <script type="text/javascript" src="mascara/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="mascara/jquery.mask.min.js"></script>
+
+  <script type="text/javascript">
+ 
+  $(document).ready(function(){
+    
+  var options =  {
+  onKeyPress: function(cpf_cnpj, e, options) {
+    var masks = ['000.000.000-00', '00.000.000/0000-00'];
+    var mask = (cpf_cnpj.length > 14) ? masks[1] : masks[0];
+    $("#cpf_cnpj").mask(mask, options);
+    }};
+
+  $("#cpf_cnpj").mask('000.0000.000-00', options);
+
+ });
+
+</script>
+
 </head>
 <body>
 	<div class="container col-6 justify-content-center" >
