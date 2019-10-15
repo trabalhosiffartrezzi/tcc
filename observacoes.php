@@ -36,7 +36,7 @@
 		 set observacoes = '$observacoes'
 		 where uservendedorid = $iduserv 
 		 order by 
-		 idvp desc limit 1";
+		 idvendap desc limit 1";
 
 		 $update = mysqli_query($bd,$sqlupdate);
 		                
@@ -53,16 +53,24 @@
 		}
 	}
 
-	$sqltotalpe = "select sum(total_un) from venda_produto;";
+	$sql_chave="select idvendap from venda_pedido where uservendedorid = $iduserv  order by idvendap desc limit 1";
+
+	$consulta_chave = mysqli_query($bd, $sql_chave);
+
+	$chave = mysqli_fetch_array($consulta_chave);
+
+    $armazena1 =$chave[0];
+
+	$sqltotalpe = "select sum(total_un) from venda_produto where vendapid =".$armazena1.";";
 
     $total = mysqli_query($bd, $sqltotalpe);
 
     $totalpe = mysqli_fetch_array($total);
 
-    $armazena =$totalpe[0]; 
+    $armazena2 =$totalpe[0]; 
 
     $sqlinsert = "update venda_pedido
-    	set vtotal =".$armazena."
+    	set vtotal =".$armazena2."
     	where uservendedorid = $iduserv";
 
     $insert = mysqli_query($bd, $sqlinsert);

@@ -155,15 +155,23 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
 
     }   
 
-    $sqltotalpe = "select sum(total_un) from venda_produto;";
+    $sql_chave="select idvendap from venda_pedido where uservendedorid = $iduserv  order by idvendap desc limit 1";
+
+    $consulta_chave = mysqli_query($bd, $sql_chave);
+
+    $chave = mysqli_fetch_array($consulta_chave);
+
+    $armazena1 =$chave[0];
+
+    $sqltotalpe = "select sum(total_un) from venda_produto where vendapid =".$armazena1.";";
 
     $total = mysqli_query($bd, $sqltotalpe);
 
     $totalpe = mysqli_fetch_array($total);
 
-    $armazenatotal = $totalpe[0];
-    
-    $tabela = $tabela."<tr><td>Total do Pedido</td><td colspan='5' >$armazenatotal</td></tr>";
+    $armazena2 =$totalpe[0]; 
+
+    $tabela = $tabela."<tr><td>Total do Pedido</td><td colspan='5' >$armazena2</td></tr>";
 
     $tabela = $tabela."</table>"; 
    } else 
