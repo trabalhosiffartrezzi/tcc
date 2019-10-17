@@ -12,19 +12,33 @@
   <script type="text/javascript" src="mascara/jquery.mask.min.js"></script>
 
   <script type="text/javascript">
- 
-  $(document).ready(function(){
+
     
-  var options =  {
-  onKeyPress: function(cpf_cnpj, options) {
-    var masks = ['000.000.000-00', '00.000.000/0000-00'];
-    var mask = (cpf_cnpj.length > 14) ? masks[1] : masks[0];
-    $("#cpf_cnpj").mask(mask, options);
-    }};
+    $(document).on('keydown', '[data-mask-for-cpf-cnpj]', function (e) {
 
-  $("#cpf_cnpj").mask('000.0000.000-00', options);
+    var digit = e.key.replace(/\D/g, '');
 
- });
+    var value = $(this).val().replace(/\D/g, '');
+
+    var size = value.concat(digit).length;
+
+    $(this).mask((size <= 11) ? '000.000.000-00' : '00.000.000/0000-00');
+
+  });
+
+    $(document).on('keydown', '[data-mask-for-phone]', function (e) {
+
+    var digit = e.key.replace(/\D/g, '');
+
+    var value = $(this).val().replace(/\D/g, '');
+
+    var size = value.concat(digit).length;
+
+    $(this).mask((size <= 10) ? '(00)0000-0000' : '(00)00000-0000');
+
+  });
+ 
+
   </script>
 
 </head>
@@ -311,7 +325,7 @@
     <br>
     <div class="col-sm-10">
       <label form="inputNome">Telefone</label> 
-      <input type="text" class="form-control" name="telefone" value="<?php echo $telefone;?>" placeholder="Telefone (com DDD)">
+      <input type="text" data-mask-for-phone class="form-control" name="telefone" value="<?php echo $telefone;?>" placeholder="Telefone (com DDD)">
     </div>
     <br>
     <br>
@@ -323,7 +337,7 @@
     <br>
     <div class="col-sm-10">
       <label form="inputNome">CPF ou CNPJ</label> 
-      <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" value="<?php echo $cpf_cnpj;?>" placeholder="CPF ou CNPJ">
+      <input type="text" data-mask-for-cpf-cnpj class="form-control" name="cpf_cnpj" value="<?php echo $cpf_cnpj;?>" placeholder="CPF ou CNPJ">
     </div>
     <br>
     <br>

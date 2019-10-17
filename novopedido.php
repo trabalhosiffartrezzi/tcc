@@ -189,7 +189,7 @@
                  
           <?php 
 
-       $result2 = "select iduser, nome from usuario";
+       $result2 = "select iduser, nome from usuario where iduser=$iduserv";
        $resultado2 = mysqli_query($bd, $result2);
 
        while($row = mysqli_fetch_array($resultado2)) {

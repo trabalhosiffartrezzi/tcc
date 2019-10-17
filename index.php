@@ -19,14 +19,17 @@
  
   $(document).ready(function(){
     
-  var options =  {
-  onKeyPress: function(cpf_cnpj, e, options) {
-    var masks = ['000.000.000-00', '00.000.000/0000-00'];
-    var mask = (cpf_cnpj.length > 14) ? masks[1] : masks[0];
-    $("#cpf_cnpj").mask(mask, options);
-    }};
+   $(document).on('keydown', '[data-mask-for-cpf-cnpj]', function (e) {
 
-  $("#cpf_cnpj").mask('000.0000.000-00', options);
+    var digit = e.key.replace(/\D/g, '');
+
+    var value = $(this).val().replace(/\D/g, '');
+
+    var size = value.concat(digit).length;
+
+    $(this).mask((size <= 11) ? '000.000.000-00' : '00.000.000/0000-00');
+
+  });
 
  });
 
@@ -38,7 +41,7 @@
   	<form action="login.php" method="post">
   		<div class="form-group">
     <label for="exampleInputEmail1">CPF ou CNPJ</label>
-    <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" placeholder="Insira seu CFP ou CNPJ(apenas numeros)">
+    <input type="text" data-mask-for-cpf-cnpj class="form-control" id="cpf_cnpj" name="cpf_cnpj" placeholder="Insira seu CFP ou CNPJ(apenas numeros)">
   		</div>
   		<div class="form-group">
     <label for="exampleInputPassword1">Senha</label>
