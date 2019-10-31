@@ -44,6 +44,10 @@ if (isset($_SESSION["cpf_cnpj"]) && isset($_SESSION["iduser"] )) {
   <li class="nav-item">
     <a class="nav-link" href="novopedido.php">Faça seu Pedido Aqui!</a>
   </li>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="meuspedidos.php">Ver meus pedidos</a>
+  </li>
 </ul>
 </body>
 </html>

@@ -28,11 +28,19 @@
    if ( mysqli_num_rows($resultado) > 0 ) {
 
       $dados = mysqli_fetch_assoc($resultado);
+
+      $funcao = $dados["funcao"];
       
       $_SESSION["cpf_cnpj"] = $cpf_cnpj; 
       $_SESSION["iduser"] = $dados["iduser"];
-      header('location: painel.php');
+      
    
+      if ($funcao == "Vendedor") 
+            header("location: painelvendedor.php");
+        else
+            header("location: index.php");
+      
+
    }else{
 
       header('location:index.php?Erro ao acessar os dados');
