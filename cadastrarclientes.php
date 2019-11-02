@@ -2,6 +2,10 @@
 <html>
 <head>
   <title>Gerenciar Usuários</title>
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
   
   <?php 
 
@@ -253,64 +257,10 @@
      }
    }
    
-   $sql_listar = "select endereco.idenderec, endereco.rua, endereco.bairro, endereco.numero, endereco.complemento, endereco.cidadeid, usuario.iduser, usuario.nome, usuario.telefone, usuario.cpf_cnpj, usuario.email,usuario.enderecoid, cidade.nomecidade
-        from 
-          endereco, usuario, cidade
-        where
-          endereco.idenderec = usuario.enderecoid and
-          endereco.cidadeid = cidade.idcidade
-        order by usuario.nome";
-   
-   $lista = mysqli_query($bd, $sql_listar);
-   
-   if ( mysqli_num_rows($lista) > 0 ) {
-    
-    $tabela = "<table class='table-striped table table-sm'>";
-    
-    $tabela = $tabela."<tr><th>Código</th><th>Nome ou Razão Social</th><th>Telefone</th><th>CPF ou CNPJ</th><th>Email</th><th>Rua</th><th>Bairro</th><th>Numero</th><th>complemento</th><th>Cidade</th>
-                 <th>Alterar</th><th>Excluir</th></tr>";
-     
-    while ( $dados = mysqli_fetch_assoc($lista) ) {
-       
-       $videnderec     = $dados["idenderec"];
-       $vrua  = $dados["rua"];
-       $vbairro  = $dados["bairro"];
-       $vnumero = $dados["numero"];
-       $vcomplemento  = $dados["complemento"];
-       $vcidadeid  = $dados["cidadeid"];
-       $vnomecidade     = $dados["nomecidade"];
-       $vidsuer     = $dados["iduser"];
-       $vnome     = $dados["nome"];
-       $vtelefone     = $dados["telefone"];
-       $vcpf_cnpj     = $dados["cpf_cnpj"];
-       $vemail     = $dados["email"];
-
-
-       $alterar = "<form method='post'>
-                      <input type='hidden' name='iduser' value='$vidsuer'>
-                      <input type='hidden' name='acao' value='BUSCAR'>
-                      <input type='image' src='./img/editar.png'> 
-                   </form>";
-       
-       $excluir = "<form method='post'>
-                      <input type='hidden' name='iduser' value='$vidsuer'>
-                      <input type='hidden' name='acao' value='EXCLUIR'>
-                      <input type='image' src='./img/deletar.png'>
-                      
-                   </form>";
-       
-       $tabela = $tabela."<tr><td>$vidsuer</td><td>$vnome</td><td>$vtelefone</td><td>$vcpf_cnpj</td><td>$vemail</td><td>$vrua</td><td>$vbairro</td><td>$vnumero</td><td>$vcomplemento</td><td>$vnomecidade</td>
-            <td>$alterar</td><td>$excluir</td></tr>";
-    }
-    
-    $tabela = $tabela."</table>"; 
-   } else 
-      $tabela = "não há dados para listar";
-      
-
     ?>
 <div class="container w-70">
-      <ul class="nav justify-content-end">
+      <ul class="nav justify-content-center">
+        <a class="nav-link" href="painelvendedor.php"><i class="fas fa-backward">Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
@@ -405,17 +355,17 @@
 <br>
 
 <div class="container">
+  <?php
 
-<fieldset>
-<legend>Clientes Cadastrados</legend>
-  
-     <?php echo $tabela; ?>
-  
-</fieldset>
+  if (isset($result1) == true && isset($result1) == true) {
+    echo '<div class="alert alert-success" role="alert">
+            Cliente cadastrado com sucesso!
+          <a class="nav-link active" href="painelvendedor.php">Clique aqui para retornar ao painel</a>
+          </div>';
+           }
+  ?>
 </div>
-</div>
-<div class="container w-70">
-<a href="painelvendedor.php"><i class="fas fa-backward fa-lg">Voltar para o painel</i></a>
+
 </div>
 </body>
 </html>

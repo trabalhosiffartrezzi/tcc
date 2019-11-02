@@ -2,7 +2,11 @@
 <html>
 <head>
 	<title>Faça seu pedido aqui!</title>
-	<?php	
+	
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  
+  <?php	
 
   session_start();
 
@@ -141,7 +145,8 @@
 ?>
 
 <div class="container w-70">
-      <ul class="nav justify-content-end">
+      <ul class="nav justify-content-center">
+        <a class="nav-link" href="painelvendedor.php"><i class="fas fa-backward ">Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
@@ -241,9 +246,6 @@
            }
   ?>
 
-</div>
-<div class="container w-70">
-<a href="novopedido.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
 </div>
 </body>
 </html>

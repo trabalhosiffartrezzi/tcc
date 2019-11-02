@@ -3,6 +3,8 @@
 <head>
 	<title>Painel do Vendedor</title>
 
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
 	<?php
 
 	session_start();
@@ -22,11 +24,13 @@
 
     <script src="https://kit.fontawesome.com/5227edd223.js" crossorigin="anonymous"></script>
 
+
+
 </head>
 <body>
 
 	<div class="container w-70">
-		<ul class="nav justify-content-end">
+		<ul class="nav justify-content-center">
   			<a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
   			<a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
   		</ul>

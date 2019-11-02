@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	
 	<?php  
 
   session_start();
@@ -34,66 +39,29 @@
       }
 
 
+  $termobusca ="";
 
-  $sql_listar = "select usuario.iduser, usuario.nome, usuario.enderecoid, venda_pedido.idvendap, venda_pedido.uservendedorid, venda_pedido.userclienteid, venda_pedido.vtotal, endereco.idenderec, endereco.rua, endereco.numero, endereco.cidadeid, cidade.idcidade, cidade.nomecidade
-	from 
-	usuario, venda_pedido, endereco, cidade
-	where 
-	usuario.iduser = venda_pedido.userclienteid and
-    endereco.idenderec = usuario.enderecoid and
-    cidade.idcidade = endereco.cidadeid and
-	venda_pedido.uservendedorid = $iduserv limit 1";
-	 
-   $lista = mysqli_query($bd, $sql_listar);
-	 
-   if ( mysqli_num_rows($lista) > 0 ) {
-		
-		$tabela = "<table class='table table-striped'>";
-		
-		$tabela = $tabela."<tr><th  scope='col'>Código da venda</th><th scope='col'>Nome do Cliente</th><th scope='col'>Valor total do Pedido</th><th scope='col'>Rua(local de entrega)</th><th scope='col'>Numero para Entrega</th><th scope='col'>Cidade</th>
-		             <th></th></tr>";
-		 
-		while ( $dados = mysqli_fetch_assoc($lista) ) {
-		   
-		   $vidvendap     = $dados["idvendap"];
-		   $vuserclienteid  = $dados["userclienteid"];
-		   $vvtotal  = $dados["vtotal"];
-		   $vnome = $dados["nome"];
-		   $vrua  = $dados["rua"];
-		   $vnumero  = $dados["numero"];
-		   $vnomecidade     = $dados["nomecidade"];
-	   
-		   $detalhar = "<form action='detalhe.php' method='post'>
-		                  <input type='hidden' name='idvendap' value='$vidvendap'>
-		                  <input type='submit' class='btn btn-secondary' value='Ver pedido detalhado'> 
-		               </form>";
-		   
-		   $tabela = $tabela."<tr><td scope='col'>$vidvendap</td><td scope='col'>$vnome</td><td scope='col'>$vvtotal</td><td scope='col'>$vrua</td><td scope='col'>$vnumero</td><td scope='col'>$vnomecidade</td>
-		        <td scope='col'>$detalhar</td></tr>";
-		}
-		
-		$tabela = $tabela."</table>"; 
-   } else 
-	    $tabela = "não há dados para listar";
-	   
+  $sql_pesquisa = "";
+
+  
 ?>
 <div class="container w-70">
-     <ul class="nav justify-content-end">
+     <ul class="nav justify-content-center">
+     		<a class="nav-link" href="painelvendedor.php"><i class="fas fa-backward">Voltar</i></a>
   			<a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
   			<a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
   		</ul>
 </div>
-<div class="container col-md-6">
-<fieldset>
-<legend>Meus pedidos/vendas</legend>
-  
-     <?php echo $tabela; ?>
-  
-</fieldset>
+<div class="container w-70">
+<form action="meuspedidos.php" method="post">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Insira o que você quer buscar</label>
+    <input type="email" class="form-control" placeholder="Ex: Alvejante, Pedido n 16, 315 reais" name="termobusca">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Enviar</button>
+</form>
 </div>
 </body>
 
-<div class="container w-70">
-<a href="painelvendedor.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
-</div>
+
 </html>

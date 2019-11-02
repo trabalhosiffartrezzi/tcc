@@ -2,7 +2,11 @@
 <html>
 <head>
 	<title>Observações do pedido</title>
-	<?php  
+	
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+
+  <?php  
 
   session_start();
 
@@ -74,7 +78,7 @@
 
 	$chave = mysqli_fetch_array($consulta_chave);
 
-    $armazena1 =$chave[0];
+  $armazena1 =$chave[0];
 
 	$sqltotalpe = "select sum(total_un) from venda_produto where vendapid =".$armazena1.";";
 
@@ -86,7 +90,8 @@
 
     $sqlinsert = "update venda_pedido
     	set vtotal =".$armazena2."
-    	where uservendedorid = $iduserv";
+    	where uservendedorid = $iduserv and 
+      idvendap =".$armazena1.";";
 
     $insert = mysqli_query($bd, $sqlinsert);
 	
@@ -94,7 +99,8 @@
 
 
   <div class="container w-70">
-      <ul class="nav justify-content-end">
+      <ul class="nav justify-content-center">
+        <a class="nav-link" href="inserirprodutos.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
@@ -131,9 +137,6 @@
   ?>
 </div>
 
-<div class="container w-70">
-<a href="inserirprodutos.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
-</div>
 
 </body>
 </html>

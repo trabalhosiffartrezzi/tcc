@@ -2,6 +2,9 @@
 <html>
 <head>
 	<title>Insira os produtos no pedido</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
 
 	<?php  
 
@@ -13,6 +16,7 @@
   } else{
     header('location:index.php?Erro ao acessar os dados');
   }
+
   ?>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -141,9 +145,8 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
   where
     venda_pedido.uservendedorid = $iduserv and 
     produto.idprod = venda_produto.prodid and
-    venda_pedido.idvendap = venda_produto.vendapid 
-   order by
-    venda_produto.idvp =".$retorno["idvendap"]." ;";
+    venda_pedido.idvendap = venda_produto.vendapid and 
+    venda_pedido.idvendap =".$retorno["idvendap"]." ;";
    
    $lista = mysqli_query($bd, $sql_listar);
    
@@ -201,7 +204,8 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
  ?>
 
   <div class="container w-70">
-      <<ul class="nav justify-content-end">
+      <<ul class="nav justify-content-center">
+        <a class="nav-link" href="novopedido.php"><i class="fas fa-backward ">Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
