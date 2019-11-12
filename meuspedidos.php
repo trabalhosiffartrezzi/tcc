@@ -26,41 +26,41 @@
   <script src="https://kit.fontawesome.com/5227edd223.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<?php  
 
-	$bd = mysqli_connect("localhost","root","","tcc");
-
-   if($bd){ 
-         mysqli_set_charset($bd, "utf8");
-   }else{
-         echo "Não foi possível conectar o BD <br>";
-         echo "Mensagem de erro: ".mysqli_connect_error() ;
-   exit();
-      }
-
-
-  $termobusca ="";
-
-  $sql_pesquisa = "";
-
-  
-?>
 <div class="container w-70">
-     <ul class="nav justify-content-center">
-     		<a class="nav-link" href="painelvendedor.php"><i class="fas fa-backward">Voltar</i></a>
-  			<a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
-  			<a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
-  		</ul>
-</div>
-<div class="container w-70">
-<form action="meuspedidos.php" method="post">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Insira o que você quer buscar</label>
-    <input type="email" class="form-control" placeholder="Ex: Alvejante, Pedido n 16, 315 reais" name="termobusca">
+    <ul class="nav justify-content-center">
+      <?php 
+      $bd = mysqli_connect("localhost","root","","tcc");
+
+        if($bd){ 
+          mysqli_set_charset($bd, "utf8");
+        }else{
+            echo "Não foi possível conectar o BD <br>";
+            echo "Mensagem de erro: ".mysqli_connect_error() ;
+        exit();
+          }
+
+      $sqlusuario ="select iduser, nome from usuario where iduser=$iduserv";
+
+      $resultado = mysqli_query($bd,$sqlusuario);
+
+      $dados = mysqli_fetch_array($resultado);
+
+      ?>
+        <a class="nav-link" href="painelvendedor.php"><i class="fas fa-undo-alt"></i>Voltar</i></a>
+        <a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"] ?></i></a>
+        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
+      </ul>
   </div>
-  <button type="submit" class="btn btn-primary mb-2">Enviar</button>
+<div class="container w-70">
+<form action="resultados.php" method="post">
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Ex: Alvejante, Pedido n 16, 315 reais" name="termobusca">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
 </form>
 </div>
+
 </body>
 
 

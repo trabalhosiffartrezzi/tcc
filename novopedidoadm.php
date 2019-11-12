@@ -164,7 +164,7 @@
       $dados = mysqli_fetch_array($resultado);
 
       ?>
-        <a class="nav-link" href="painelvendedor.php"><i class="fas fa-undo-alt"></i>Voltar</i></a> 
+        <a class="nav-link" href="paineladm.php"><i class="fas fa-undo-alt"></i>Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"] ?></i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
@@ -172,7 +172,7 @@
   <br>
   <br>
 <div class="container w-70">
- <form action="novopedido.php" method="post">
+ <form action="novopedidoadm.php" method="post">
   <div class="form-group w-70">
     <h2>Insira os dados abaixo</h2>
      <div class="col-sm-10">

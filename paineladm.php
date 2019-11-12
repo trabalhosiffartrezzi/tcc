@@ -31,7 +31,6 @@
 
 	<div class="container w-70">
 		<ul class="nav justify-content-center">
-
 			<?php 
 			$bd = mysqli_connect("localhost","root","","tcc");
 
@@ -50,7 +49,6 @@
 			$dados = mysqli_fetch_array($resultado);
 
 			?>
-
   			<a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"] ?></i></a>
   			<a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt">Sair</i></a> 
   		</ul>
@@ -58,20 +56,46 @@
 	<br>
 	<br>
 	<div class="container w-70">
-  	<a href="novopedido.php"><button type="button" class="btn btn-primary btn-lg btn-block">Fazer venda o pedido</button></a>
+  	<a href="novopedidoadm.php"><button type="button" class="btn btn-primary btn-lg btn-block">Fazer uma venda</button></a>
 	</div>
 	<br>
 	<br>
 	</div>
 	<div class="container w-70">
-  	<a href="cadastrarclientesvendedor.php"><button type="button" class="btn btn-primary btn-lg btn-block">Cadastrar clientes</button></a>
+  	<a href="cadastrarclienteadm.php"><button type="button" class="btn btn-primary btn-lg btn-block">Cadastrar clientes</button></a>
 	</div>
 	<br>
 	<br>
 	</div>
 	<div class="container w-70">
-  	<a href="meuspedidos.php"><button type="button" class="btn btn-primary btn-lg btn-block">Ver meus pedidos</button></a>
+  	<a href="cadastrausuario.php"><button type="button" class="btn btn-primary btn-lg btn-block">Cadastrar Vendedor/Representantes</button></a>
 	</div>
+	<br>
+	<br>
+	</div>
+	<div class="container w-70">
+  	<a href="cadastraproduto.php"><button type="button" class="btn btn-primary btn-lg btn-block">Cadastrar Produtos</button></a>
+	</div>
+	<br>
+	<br>
+	<div class="container w-70">
+  	<a href="cadastracategoria.php"><button type="button" class="btn btn-primary btn-lg btn-block">Cadastrar Categorias</button></a>
+	</div>
+	<br>
+	<br>
+	</div>
+	<div class="container w-70">
+  	<a href="meuspedidos.php"><button type="button" class="btn btn-primary btn-lg btn-block">Ver todos os pedidos pedidos</button></a>
+	</div><br>
+	<br>
+	</div>
+	<div class="container w-70">
+  	<a href="cadastrapagamento.php"><button type="button" class="btn btn-primary btn-lg btn-block">Controlar Pagamento dos Pedidos</button></a>
+	</div>
+	
+	
+
+	
 
 
 </body>

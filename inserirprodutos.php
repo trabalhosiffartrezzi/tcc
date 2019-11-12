@@ -204,14 +204,29 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
  ?>
 
   <div class="container w-70">
-      <<ul class="nav justify-content-center">
-        <a class="nav-link" href="novopedido.php"><i class="fas fa-backward ">Voltar</i></a>
-        <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
+    <ul class="nav justify-content-center">
+      <?php 
+      $bd = mysqli_connect("localhost","root","","tcc");
+
+        if($bd){ 
+          mysqli_set_charset($bd, "utf8");
+        }else{
+            echo "Não foi possível conectar o BD <br>";
+            echo "Mensagem de erro: ".mysqli_connect_error() ;
+        exit();
+          }
+
+      $sqlusuario ="select iduser, nome from usuario where iduser=$iduserv";
+
+      $resultado = mysqli_query($bd,$sqlusuario);
+
+      $dados = mysqli_fetch_array($resultado);
+
+      ?> 
+        <a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"] ?></i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
   </div>
- <div class="container w-70">
-
   <?php
 
     $sql_pedido = "select venda_pedido.uservendedorid, venda_pedido.idvendap, venda_pedido.userclienteid, usuario.iduser, usuario.nome, usuario.cpf_cnpj
@@ -290,9 +305,6 @@ $sql_listar = "select produto.idprod, produto.nomeprod, produto.valor, venda_pro
 <br>
 <div class="alert alert-danger" role="alert">
   <a href="observacoes.php">Clique aqui para concluir o pedido</a>
-</div>
-<div class="container w-70">
-<a href="novopedido.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
 </div>
 </body>
 </html>

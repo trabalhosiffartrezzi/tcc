@@ -100,8 +100,25 @@
 
   <div class="container w-70">
       <ul class="nav justify-content-center">
-        <a class="nav-link" href="inserirprodutos.php"><i class="fas fa-backward fa-lg">Voltar</i></a>
-        <a class="nav-link disabled"><i class="fas fa-user">Nome Usuário</i></a>
+        <?php 
+      $bd = mysqli_connect("localhost","root","","tcc");
+
+        if($bd){ 
+          mysqli_set_charset($bd, "utf8");
+        }else{
+            echo "Não foi possível conectar o BD <br>";
+            echo "Mensagem de erro: ".mysqli_connect_error() ;
+        exit();
+          }
+
+      $sqlusuario ="select iduser, nome from usuario where iduser=$iduserv";
+
+      $resultado = mysqli_query($bd,$sqlusuario);
+
+      $dados = mysqli_fetch_array($resultado);
+
+      ?>
+        <a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"]; ?></i></a>
         <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
   </div>
@@ -128,12 +145,29 @@
 </form>
 <?php
 
-  if (isset($update) == true) {
-    echo '<div class="alert alert-success" role="alert">
+  if (isset($update) == true ) {
+
+    $sqlfuncao = "select iduser, funcao from usuario where iduser=$iduserv";
+
+    $resultado = mysqli_query($bd,$sqlfuncao);
+
+    $dados = mysqli_fetch_array($resultado);
+
+    if($dados["funcao"]=="Vendedor"){
+      echo '<div class="alert alert-success" role="alert">
             Observação inserida! 
           <a class="nav-link active" href="painelvendedor.php">Clique aqui para finalizar o pedido</a>
           </div>';
            }
+      else{
+          echo '<div class="alert alert-success" role="alert">
+            Observação inserida! 
+          <a class="nav-link active" href="painelamd.php">Clique aqui para finalizar o pedido</a>
+          </div>';
+      }
+
+    }
+    
   ?>
 </div>
 

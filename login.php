@@ -35,8 +35,11 @@
       $_SESSION["iduser"] = $dados["iduser"];
       
    
-      if ($funcao == "Vendedor") 
+      if ($funcao == "Vendedor" || $funcao == "Representante") 
             header("location: painelvendedor.php");
+      elseif ($funcao == "Administrador") {
+         header("location: paineladm.php");
+      }
         else
             header("location: index.php");
       
