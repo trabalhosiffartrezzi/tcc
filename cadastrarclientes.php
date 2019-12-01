@@ -277,14 +277,34 @@
 
       $dados = mysqli_fetch_array($resultado);
 
+       $sqlusuario ="select iduser, nome from usuario where iduser=$iduserv";
+
+      $resultado = mysqli_query($bd,$sqlusuario);
+
+      $dados = mysqli_fetch_array($resultado);
+
       ?>
-        <a class="nav-link" href="painelvendedor.php"><i class="fas fa-undo-alt"></i>Voltar</i></a>
         <a class="nav-link disabled"><i class="fas fa-user"><?php echo $dados["nome"] ?></i></a>
-        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt">Sair</i></a> 
+        <?php 
+        $sqlfuncao = "select iduser, funcao from usuario where iduser=$iduserv";
+
+        $resultado2 = mysqli_query($bd,$sqlfuncao);
+
+        $dados2 = mysqli_fetch_array($resultado2);
+
+        if($dados2["funcao"]=="Vendedor"){
+          echo '<a class="nav-link" href="painelvendedor.php"><i class="fas fa-undo-alt"></i>Voltar</i></a> ';
+           }
+        else{
+          echo '<a class="nav-link" href="paineladm.php"><i class="fas fa-undo-alt"></i>Voltar</i></a>';
+          }
+
+        ?>
+        <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt">Sair</i></a> 
       </ul>
   </div>
  <div class="container w-70">
- <form action="cadastrarclientesvendedor.php" method="post">
+ <form action="cadastrarclientes.php" method="post">
   <div class="form-group ">
     <h2>Cadastro de Usuários</h2>
      <div class="col-sm-10">
